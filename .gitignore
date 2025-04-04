@@ -1,0 +1,44 @@
+# Environment variables
+.env
+
+# Credentials / Secrets
+*.json
+
+# Database folder
+pdf_db/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Generated output files
+*.png
+*.jpg
+*.jpeg
+*.tiff
+*.bmp
+*.gif
+*.ppm
+*.pgm
+*.pbm
+*.pnm
+*.webp
+*.hdr
+*.heif
+
+extracted_text.txt
+extracted_data.csv
+extracted_data.xlsx
+
+# Output folders from pdf_to_images.py (match pattern)
+*_????????????/
+
+# IDE specific files
+.vscode/
+.idea/
+
+# OS specific files
+.DS_Store
+Thumbs.db
