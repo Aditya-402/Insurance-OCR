@@ -28,4 +28,4 @@ def detect_text(path):
 
 if __name__ == '__main__':
     # Replace 'path_to_image.jpg' with the path to the image file you want to analyze.
-    detect_text('page_1.jpg')
+    detect_text('1.jpg')

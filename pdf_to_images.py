@@ -4,7 +4,7 @@ from pdf2image import convert_from_path
 from datetime import datetime
 
 def get_timestamp():
-    return datetime.now().strftime("%M%H%d%m%y")
+    return datetime.now().strftime("%H%M%S%d%m%y")
 
 def convert_pdf_to_images(pdf_path, output_folder=None, dpi=300, fmt='png'):
     """

@@ -11,6 +11,13 @@ This project uses Streamlit and Google Gemini to extract structured data from in
 *   Display extracted data in a table format.
 *   Download extracted data as a CSV file.
 
+## Recent Updates (April 2025)
+
+- **Stepwise UI Feedback:** The app now uses Streamlit's `st.status` to show clear progress for each processing step (PDF → images, image → text, text → structured data). Success ticks appear for each completed stage.
+- **Interactive Table Filtering:** The extracted data table now uses `st.data_editor`, allowing you to filter and sort by Field, Value, and Page directly in the UI.
+- **Cleaner UI:** The extraction log and raw text preview have been removed for a more streamlined experience.
+- **Bug Fixes & Refactoring:** Improved error handling and code organization.
+
 ## Setup
 
 1.  **Clone the repository:**
@@ -46,6 +53,7 @@ This project uses Streamlit and Google Gemini to extract structured data from in
 
 1.  **Run the Streamlit app:**
     ```bash
+    conda activate insurance_ocr_env
     streamlit run streamlit_app.py
     ```
 
@@ -53,7 +61,10 @@ This project uses Streamlit and Google Gemini to extract structured data from in
 
 3.  **Upload a PDF** file using the file uploader.
 
-4.  The app will process the PDF, extract text, query Gemini for structured data based on `questions.txt`, display the results in a table, and provide a button to download the data as a CSV.
+4.  The app will process the PDF, extract text, query Gemini for structured data based on `questions.txt`, display the results in a filterable table, and provide a button to download the data as a CSV.
+
+## Security Note
+- **Never commit your `.env` file** to version control. It should be listed in `.gitignore` by default. Use `.env.example` for reference.
 
 ## Files
 
