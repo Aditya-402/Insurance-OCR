@@ -122,92 +122,102 @@ def query_google_with_image(prompt, image_path):
                             - name
                             - pan number
 
+                            Employee ID
+                            - Employee ID
+                            - Employee Name
+
 
                             Response Format:  
                             <item> :: <value> :: <category> ||
 
                             Category Determination: Identify the category based on specific text found in the image:
 
-                            - **Claim form page 1**: if the image contains any of  
+                            - Claim form page 1: if the image contains any of  
                             - "Request for Cashless Hospitalization"  
                             - "Policy Part - C"  
                             - "Rohini ID"  
 
-                            - **Claim form page 2**: if the image contains any of  
+                            - Claim form page 2: if the image contains any of  
                             - "TO BE FILLED BY TREATING DOCTOR/HOSPITAL"  
                             - "To be filled by Treating Hospital"  
                             - "To be filled by Treating Doctor"  
 
-                            - **Assessment Record**: if the image contains any of  
+                            - Assessment Record: if the image contains any of  
                             - "Outpatient Reassessment"  
                             - "Outpatient assessment"  
                             - "Outpatient Card"  
 
-                            - **Radiology Report**: if the image contains any of  
+                            - Radiology Report: if the image contains any of  
                             - "Xray"  
                             - "Department of radiology"  
 
-                            - **Discharge Summary**: if the image contains  
+                            - Discharge Summary: if the image contains  
                             - "Discharge Summary"  
 
-                            - **Insurance Card**: if the image contains any of  
+                            - Insurance Card: if the image contains any of  
                             - "Policy Number"  
                             - "Star Health Insurance & Allied Insurance Company"  
                             - "Customer Identity Card"  
 
-                            - **Aadhar card**: if the image contains any of  
+                            - Aadhar card: if the image contains any of  
                             - "Government of India"  
                             - "Aadhar"  
                             - "Mera Aadhar, Meri Pehchan"  
 
-                            - **PAN Card**: if the image contains any of  
+                            - PAN Card: if the image contains any of  
                             - "INCOME TAX DEPARTMENT"  
                             - "GOVT. OF INDIA"  
                             - "Permanent Account Number"  
 
-                            - **Claim form page 3**: if the image contains  
+                            - Claim form page 3: if the image contains  
                             - "DETAILS OF PATIENT ADMITTED"  
 
-                            - **Claim form page 4**: if the image contains  
+                            - Claim form page 4: if the image contains  
                             - "DECLARATION"  
 
-                            - **Insurance Document**: if the image contains  
+                            - Insurance Document: if the image contains  
                             - "Certificate of Insurance"  
 
-                            - **Medical Report**: if the image is identified as a medical report document  
+                            - Medical Report: if the image is identified as a medical report document  
 
-                            - If none of the above cues are found, the category is **"Category to be determined."**
+                            - Employee ID: if the image contains  
+                            - "Employee ID"  
 
-                            A document can have multiple categories; list them comma‑separated. Use "not in scope" for missing values.
+                            - If none of the above cues are found, the category is "Category to be determined."
+
+                            A document can have multiple categories; list them comma separated. Use "not in scope" for missing values.
 
                             example: 
                             if the image is detected as category Claim form page 1 then output suppose to be
 
-                            Hospital Name :: Srikara Hospitals Miyapur :: Claim form page 1 ||
-                            Hospital Location :: Mythri Nagar, Madinaguda, Miyapur, Hyderabad :: Claim form page 1 ||
-                            Hospital City :: Hyderabad :: Claim form page 1 ||
-                            Hospital Address :: #222 & 223, Phase 2, Mythri Nagar, Madinaguda, Miyapur, Hyderabad, :: Claim form page 1 ||
-                            Rohini ID :: 8900080337220 :: Claim form page 1 ||
-                            Patient Name :: P MAHA LAKSHMI :: Claim form page 1 ||
-                            Patient Gender :: Female :: Claim form page 1 ||
-                            Patient Age :: 55 :: Claim form page 1 ||
-                            Patient Insured ID Card :: 13975620000016659 :: Claim form page 1 ||
-                            Patient Policy Number :: P/900000/01/2023/000192 :: Claim form page 1 ||
+                            Hospital Name :: Srikara Hospitals Miyapur :: Claim form page 1 ||
+                            Hospital Location :: Mythri Nagar, Madinaguda, Miyapur, Hyderabad :: Claim form page 1 ||
+                            Hospital City :: Hyderabad :: Claim form page 1 ||
+                            Hospital Address :: #222 & 223, Phase 2, Mythri Nagar, Madinaguda, Miyapur, Hyderabad, :: Claim form page 1 ||
+                            Rohini ID :: 8900080337220 :: Claim form page 1 ||
+                            Patient Name :: P MAHA LAKSHMI :: Claim form page 1 ||
+                            Patient Gender :: Female :: Claim form page 1 ||
+                            Patient Age :: 55 :: Claim form page 1 ||
+                            Patient Insured ID Card :: 13975620000016659 :: Claim form page 1 ||
+                            Patient Policy Number :: P/900000/01/2023/000192 :: Claim form page 1 ||
 
                             say age detail is missing in the category detected then
 
-                            Hospital Name :: Srikara Hospitals Miyapur :: Claim form page 1 ||
-                            Hospital Location :: Mythri Nagar, Madinaguda, Miyapur, Hyderabad :: Claim form page 1 ||
-                            Hospital City :: Hyderabad :: Claim form page 1 ||
-                            Hospital Address :: #222 & 223, Phase 2, Mythri Nagar, Madinaguda, Miyapur, Hyderabad, :: Claim form page 1 ||
-                            Rohini ID :: 8900080337220 :: Claim form page 1 ||
-                            Patient Name :: P MAHA LAKSHMI :: Claim form page 1 ||
-                            Patient Gender :: Female :: Claim form page 1 ||
-                            Patient Age :: not in scope :: Claim form page 1 ||
-                            Patient Insured ID Card :: 13975620000016659 :: Claim form page 1 ||
-                            Patient Policy Number :: P/900000/01/2023/000192 :: Claim form page 1 ||
+                            Hospital Name :: Srikara Hospitals Miyapur :: Claim form page 1 ||
+                            Hospital Location :: Mythri Nagar, Madinaguda, Miyapur, Hyderabad :: Claim form page 1 ||
+                            Hospital City :: Hyderabad :: Claim form page 1 ||
+                            Hospital Address :: #222 & 223, Phase 2, Mythri Nagar, Madinaguda, Miyapur, Hyderabad, :: Claim form page 1 ||
+                            Rohini ID :: 8900080337220 :: Claim form page 1 ||
+                            Patient Name :: P MAHA LAKSHMI :: Claim form page 1 ||
+                            Patient Gender :: Female :: Claim form page 1 ||
+                            Patient Age :: not in scope :: Claim form page 1 ||
+                            Patient Insured ID Card :: 13975620000016659 :: Claim form page 1 ||
+                            Patient Policy Number :: P/900000/01/2023/000192 :: Claim form page 1 ||
 
-                            the same applies across other categories too.""",
+                            the same applies across other categories too.
+                            
+                            But if the detected image as "Category to be determined" then no response needed.
+                            """,
                             )
 
     file = upload_to_gemini(image_path, mime_type="image/png")
