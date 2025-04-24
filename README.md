@@ -10,7 +10,7 @@ This project uses Streamlit and Google Gemini to extract structured data from in
 *   Extract structured key-value pairs from the combined text of the PDF using Google Gemini (`query_text_gemini.py`).
 *   Display extracted data in a table format.
 *   Download extracted data as a CSV file.
-*   **Batch processing:** Use `batch_process_pdfs.py` to process all PDFs in a folder via the same pipeline, with progress tracked by `tqdm` and detailed logs saved per batch.
+*   **Batch processing:** Use `batch_process_pdfs.py` to process all PDFs in a folder via the same pipeline. Progress is tracked by `tqdm` (progress bar), and detailed logs are saved per batch run. For each PDF, all outputs (images, extracted text, and CSV) are saved inside a dedicated subfolder named after the PDF (without extension) within the batch run folder. The extracted text and CSV will have the same base name as the PDF (e.g., `patient1.txt`, `patient1.csv`). This makes batch processing fully automated and highly organized for large-scale document processing.
 
 ## Recent Updates (April 2025)
 

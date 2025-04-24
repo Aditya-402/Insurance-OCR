@@ -230,7 +230,7 @@ def query_google_with_image(prompt, image_path):
         ]
     )
     response = chat_session.send_message(prompt)
-    time.sleep(5)
+    time.sleep(0.5)
     return response.text
 
 if __name__ == '__main__':

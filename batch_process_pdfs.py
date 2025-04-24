@@ -19,11 +19,15 @@ def setup_logging(log_path):
     )
 
 
+import shutil
+
 def process_pdf(pdf_path, output_folder, questions_file):
     pdf_name = os.path.splitext(os.path.basename(pdf_path))[0]
+    pdf_output_folder = os.path.join(output_folder, f"{pdf_name}")
+    os.makedirs(pdf_output_folder, exist_ok=True)
     try:
-        # 1. Convert PDF to images
-        images_folder, image_files = convert_pdf_to_images(pdf_path)
+        # 1. Convert PDF to images (output to subfolder in batch output)
+        images_folder, image_files = convert_pdf_to_images(pdf_path, output_folder=pdf_output_folder)
         if not image_files:
             raise RuntimeError(f"No images generated from PDF: {pdf_path}")
 
@@ -36,19 +40,21 @@ def process_pdf(pdf_path, output_folder, questions_file):
             page_separator = f"\n\n--- Page {idx} ---\n\n"
             all_text += page_separator + (extracted_text or "")
 
-        # 3. Save extracted text
-        output_text_path = os.path.join(output_folder, f"{pdf_name}_extracted.txt")
+        # 3. Save extracted text in per-pdf folder
+        output_text_path = os.path.join(pdf_output_folder, f"{pdf_name}.txt")
         with open(output_text_path, "w", encoding="utf-8") as text_file:
             text_file.write(all_text)
 
         # 4. Query Gemini for structured data
         df, csv_path = query_gemini_with_file(output_text_path, all_text)
-        if df is not None:
-            csv_out_path = os.path.join(output_folder, f"{pdf_name}_extracted.csv")
-            df.to_csv(csv_out_path, index=False)
-            logging.info(f"SUCCESS: {pdf_path} -> {csv_out_path}")
+        # Move/rename CSV to per-pdf folder as extracted_data.csv
+        desired_csv_path = os.path.join(pdf_output_folder, f"{pdf_name}.csv")
+        if csv_path and os.path.exists(csv_path):
+            if os.path.abspath(csv_path) != os.path.abspath(desired_csv_path):
+                shutil.move(csv_path, desired_csv_path)
+            logging.info(f"SUCCESS: {pdf_path} -> {desired_csv_path}")
         else:
-            logging.error(f"FAIL: {pdf_path} - Gemini extraction returned None")
+            logging.error(f"FAIL: {pdf_path} - Gemini extraction returned None or CSV not found")
     except Exception as e:
         logging.error(f"FAIL: {pdf_path} - {e}")
 
