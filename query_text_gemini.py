@@ -160,7 +160,7 @@ def query_gemini_with_file(filepath, user_prompt):
 
         # Save to CSV in same directory as input file, but with unique name
         base_filename = os.path.splitext(os.path.basename(filepath))[0]
-        csv_filename = f"{base_filename}_extracted_data.csv"
+        csv_filename = f"{base_filename}.csv"
         csv_path = os.path.join(os.path.dirname(filepath), csv_filename)
 
         df = pd.DataFrame(data)
