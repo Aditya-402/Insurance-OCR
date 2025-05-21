@@ -5,8 +5,10 @@ from pdf_to_images import convert_pdf_to_images
 from extraction_google import query_google_with_image
 from query_text_gemini import query_gemini_with_file
 import sqlite3
+from datetime import datetime # Added for timestamping output folder
 from insu_update_db import process_txt_file, DB_PATH
 from rules_agent import check_single_rule, check_rules_from_file
+from document_processor import parse_and_split_file, consolidate_and_output # Added for document part processing
 
 def save_extracted_text(output_folder, extracted_texts, base_name):
     """Save extracted texts to a file with page numbers"""
@@ -92,6 +94,9 @@ def main():
         if 'image_files' not in st.session_state: st.session_state.image_files = []
         if 'pdf_base_name' not in st.session_state: st.session_state.pdf_base_name = ""
         if 'last_extraction_method' not in st.session_state: st.session_state.last_extraction_method = "google"
+        if 'part1_file_path' not in st.session_state: st.session_state.part1_file_path = None # For document_processor output
+        if 'part2_file_path' not in st.session_state: st.session_state.part2_file_path = None # For document_processor output
+        if 'processed_output_file_path' not in st.session_state: st.session_state.processed_output_file_path = None # For document_processor output
 
         if uploaded_file is not None:
             temp_upload_dir = "temp_uploads"
@@ -108,8 +113,12 @@ def main():
                 st.session_state.details_extracted_path = None
                 st.session_state.error_message = None
                 st.session_state.pdf_base_name = os.path.splitext(uploaded_file.name)[0]
-                st.session_state.output_folder = os.path.join("processed_output", st.session_state.pdf_base_name)
+                current_time_str = datetime.now().strftime("%H%M%S_%d%m%y")
+                st.session_state.output_folder = os.path.join("processed_output", f"{st.session_state.pdf_base_name}_{current_time_str}")
                 st.session_state.image_files = []
+                st.session_state.part1_file_path = None # Reset for document_processor output
+                st.session_state.part2_file_path = None # Reset for document_processor output
+                st.session_state.processed_output_file_path = None # Reset for document_processor output
 
                 try:
                     with st.status("Converting PDF to images...", expanded=True) as status_convert:
@@ -125,102 +134,143 @@ def main():
                     with st.status("Extracting text and mapping data...", expanded=True) as status_extract:
                         all_text = ""
                         if st.session_state.image_files:
-                            with st.status("Extracting text from images...", expanded=True) as status:
+                            try:
+                                total_pages = len(st.session_state.image_files)
+                                progress_bar = st.progress(0)
+                                question_file_path = "questions.txt"
+                                if not os.path.exists(question_file_path):
+                                    raise FileNotFoundError(f"Required prompt file not found: {question_file_path}")
+                                with open(question_file_path, 'r', encoding='utf-8') as f:
+                                    base_prompt = f.read()
+
+                                for idx, image_file in enumerate(st.session_state.image_files, start=1):
+                                    page_status = f"Extracting text from image {idx}/{total_pages}..."
+                                    status_extract.update(label=page_status)
+
+                                    # Choose extraction function based on selected method
+                                    if st.session_state.last_extraction_method == "google":
+                                        if not os.getenv("GOOGLE_API_KEY"):
+                                            raise ValueError("GOOGLE_API_KEY not found. Please set it.")
+                                        extracted_text = query_google_with_image(base_prompt, image_file)
+                                    else:
+                                        raise ValueError(f"Unknown extraction method: {st.session_state.last_extraction_method}")
+
+                                    if not extracted_text:
+                                        extracted_text = ""
+
+                                    page_separator = f"\n\n--- Page {idx} ---\n\n"
+                                    all_text += page_separator + extracted_text
+                                    progress_bar.progress(idx / total_pages)
+
+                                # --- Stage 2.1: Save Extracted Text ---
+                                status_extract.update(label="Saving extracted text...")
+                                output_dir_text = st.session_state.output_folder
+                                os.makedirs(output_dir_text, exist_ok=True)
+                                output_text_filename = f"{st.session_state.pdf_base_name}.txt"
+                                output_text_path = os.path.join(output_dir_text, output_text_filename)
+                                
+                                # st.write(f"DEBUG: Attempting to write consolidated text to: {output_text_path}") # Debug Log 1
+                                
+                                with open(output_text_path, "w", encoding="utf-8") as text_file:
+                                    text_file.write(all_text)
+                                
+                                # st.write(f"DEBUG: Finished writing to: {output_text_path}") # Debug Log 2
+                                # st.write(f"DEBUG: Does file exist after write at {output_text_path}? {os.path.exists(output_text_path)}") # Debug Log 3
+
+                                # --- Stage 2.2: Process with document_processor.py ---
+                                status_extract.update(label="Splitting document into parts (document_processor)..." )
                                 try:
-                                    total_pages = len(st.session_state.image_files)
-                                    progress_bar = st.progress(0)
-                                    question_file_path = "questions.txt"
-                                    if not os.path.exists(question_file_path):
-                                        raise FileNotFoundError(f"Required prompt file not found: {question_file_path}")
-                                    with open(question_file_path, 'r', encoding='utf-8') as f:
-                                        base_prompt = f.read()
-
-                                    for idx, image_file in enumerate(st.session_state.image_files, start=1):
-                                        page_status = f"Processing page {idx}/{total_pages}..."
-                                        status.update(label=page_status)
-
-                                        # Choose extraction function based on selected method
-                                        if st.session_state.last_extraction_method == "google":
-                                            if not os.getenv("GOOGLE_API_KEY"):
-                                                raise ValueError("GOOGLE_API_KEY not found. Please set it.")
-                                            extracted_text = query_google_with_image(base_prompt, image_file)
-                                        else:
-                                            raise ValueError(f"Unknown extraction method: {st.session_state.last_extraction_method}")
-
-                                        if not extracted_text:
-                                            extracted_text = ""
-
-                                        page_separator = f"\n\n--- Page {idx} ---\n\n"
-                                        all_text += page_separator + extracted_text
-                                        progress_bar.progress(idx / total_pages)
-
-                                    # --- Stage 2.1: Save Extracted Text ---
-                                    status.update(label="Saving extracted text...")
-                                    output_dir_text = st.session_state.output_folder or "output_data"
-                                    os.makedirs(output_dir_text, exist_ok=True)
-                                    output_text_filename = f"{os.path.splitext(original_name_in_temp)[0]}.txt"
-                                    output_text_path = os.path.join(output_dir_text, output_text_filename)
+                                    # Ensure output_folder (e.g., processed_output/pdf_base_name) exists for part files
+                                    os.makedirs(st.session_state.output_folder, exist_ok=True)
                                     
-                                    st.write(f"DEBUG: Attempting to write consolidated text to: {output_text_path}") # Debug Log 1
-                                    
-                                    with open(output_text_path, "w", encoding="utf-8") as text_file:
-                                        text_file.write(all_text)
-                                    
-                                    st.write(f"DEBUG: Finished writing to: {output_text_path}") # Debug Log 2
-                                    st.write(f"DEBUG: Does file exist after write at {output_text_path}? {os.path.exists(output_text_path)}") # Debug Log 3
-                                    
-                                    st.session_state.extracted_text_path = output_text_path
-                                    status.update(label=f"✅ Text extraction complete! Saved to: {output_text_path}", state="complete", expanded=False)
+                                    part1_target_path = os.path.join(st.session_state.output_folder, f"{st.session_state.pdf_base_name}_part1.txt")
+                                    part2_target_path = os.path.join(st.session_state.output_folder, f"{st.session_state.pdf_base_name}_part2.txt")
 
-                                except Exception as e_extract:
-                                    status.update(label=f"Text Extraction Failed: {e_extract}", state="error")
-                                    raise
+                                    # st.write(f"DEBUG: Calling parse_and_split_file with input: {output_text_path}, part1: {part1_target_path}, part2: {part2_target_path}")
+                                    returned_part1_path, returned_part2_path = parse_and_split_file(
+                                        input_path=output_text_path,
+                                        part1_path=part1_target_path,
+                                        part2_path=part2_target_path
+                                    )
+                                    st.session_state.part1_file_path = returned_part1_path 
+                                    st.session_state.part2_file_path = returned_part2_path
+                                    # st.write(f"DEBUG: Part 1 file created: {st.session_state.part1_file_path} (Exists: {os.path.exists(st.session_state.part1_file_path if st.session_state.part1_file_path else False)})")
+                                    # st.write(f"DEBUG: Part 2 file created: {st.session_state.part2_file_path} (Exists: {os.path.exists(st.session_state.part2_file_path if st.session_state.part2_file_path else False)})")
+
+                                    # Ensure the part files actually exist before consolidation
+                                    if not (st.session_state.part1_file_path and os.path.exists(st.session_state.part1_file_path) and 
+                                            st.session_state.part2_file_path and os.path.exists(st.session_state.part2_file_path)):
+                                        raise FileNotFoundError("Part1 or Part2 file was not created successfully by parse_and_split_file.")
+
+                                    status_extract.update(label="Consolidating processed parts (document_processor)..." )
+                                    # base_filename for consolidate_and_output should be like 'processed_output/pdf_base_name/pdf_base_name'
+                                    base_filename_for_consolidate = os.path.join(st.session_state.output_folder, st.session_state.pdf_base_name)
+                                    # st.write(f"DEBUG: Calling consolidate_and_output with base_filename: {base_filename_for_consolidate}")
+                                    
+                                    consolidate_and_output(base_filename_for_consolidate) 
+
+                                    st.session_state.processed_output_file_path = os.path.join(st.session_state.output_folder, f"{st.session_state.pdf_base_name}_output.txt")
+                                    # st.write(f"DEBUG: Processed output file created: {st.session_state.processed_output_file_path} (Exists: {os.path.exists(st.session_state.processed_output_file_path if st.session_state.processed_output_file_path else False)})")
+
+                                except Exception as e_doc_proc:
+                                    st.session_state.error_message = f"Document Sub-Processing (document_processor) Failed: {e_doc_proc}"
+                                    status_extract.update(label=st.session_state.error_message, state="error")
+                                    st.error(st.session_state.error_message)
+                                    # We will still set extracted_text_path, but other paths might be None
+                                
+                                st.session_state.extracted_text_path = output_text_path # Original full text path is still primary for now
+                                # The final update for this entire block will be done by the status_extract itself when exiting 'with' or by explicit update
+                                # status_extract.update(label=f"✅ Text extraction complete! Saved to: {output_text_path}", state="complete", expanded=False)
+
+                            except Exception as e_extract:
+                                status_extract.update(label=f"Text Extraction Failed: {e_extract}", state="error")
+                                raise
 
                         # Query data using questions.txt
-                        with st.spinner("Extracting structured data..."):
-                            try:
-                                with open(output_text_path, 'r', encoding='utf-8') as f:
-                                    prompt = f.read()
+                        status_extract.update(label="Extracting structured data...")
+                        try:
+                            with open(output_text_path, 'r', encoding='utf-8') as f:
+                                prompt = f.read()
 
-                                st.write(f"DEBUG: Passing to query_gemini_with_file: {output_text_path}") # Debug Log 4
-                                df, csv_path = query_gemini_with_file(
-                                    output_text_path,
-                                    prompt
-                                )
+                            # st.write(f"DEBUG: Passing to query_gemini_with_file: {output_text_path}") # Debug Log 4
+                            df, csv_path = query_gemini_with_file(
+                                output_text_path,
+                                prompt
+                            )
 
-                                if df is not None:
-                                    st.subheader("Structured Data (Table):")
-                                    st.dataframe(df)
+                            if df is not None:
+                                st.subheader("Structured Data (Table):")
+                                st.dataframe(df)
 
-                                    # --- DEBUG: Show pdf_base_name ---
-                                    if 'pdf_base_name' in st.session_state:
-                                        st.write(f"DEBUG: pdf_base_name = '{st.session_state.pdf_base_name}'")
-                                    else:
-                                        st.write("DEBUG: pdf_base_name is not in session_state here.")
-                                    # --- END DEBUG ---
+                                # --- # DEBUG: Show pdf_base_name ---
+                                # if 'pdf_base_name' in st.session_state:
+                                #     st.write(f"DEBUG: pdf_base_name = '{st.session_state.pdf_base_name}'")
+                                # else:
+                                #     st.write("DEBUG: pdf_base_name is not in session_state here.")
+                                # --- # END DEBUG ---
 
-                                    # Offer CSV download
-                                    if csv_path and os.path.exists(csv_path):
-                                        with open(csv_path, "rb") as f_csv:
-                                            st.download_button(
-                                                label="Download data as CSV",
-                                                data=f_csv.read(), # Read the content of the file for download
-                                                file_name=f"{st.session_state.pdf_base_name.split('_')[0]}.csv", # Corrected download name
-                                                mime="text/csv"
-                                            )
-                                    else:
-                                        # Fallback if csv_path is not returned or file doesn't exist, but df is present
-                                        csv_from_df = df.to_csv(index=False).encode('utf-8')
+                                # Offer CSV download
+                                if csv_path and os.path.exists(csv_path):
+                                    with open(csv_path, "rb") as f_csv:
                                         st.download_button(
                                             label="Download data as CSV",
-                                            data=csv_from_df,
+                                            data=f_csv.read(), # Read the content of the file for download
                                             file_name=f"{st.session_state.pdf_base_name.split('_')[0]}.csv", # Corrected download name
-                                            mime='text/csv',
+                                            mime="text/csv"
                                         )
                                 else:
-                                    st.error("Data extraction failed or no DataFrame returned. Check logs or Gemini response.")
-                            except Exception as e:
-                                st.error(f"Data extraction failed: {str(e)}")
+                                    # Fallback if csv_path is not returned or file doesn't exist, but df is present
+                                    csv_from_df = df.to_csv(index=False).encode('utf-8')
+                                    st.download_button(
+                                        label="Download data as CSV",
+                                        data=csv_from_df,
+                                        file_name=f"{st.session_state.pdf_base_name.split('_')[0]}.csv", # Corrected download name
+                                        mime='text/csv',
+                                    )
+                            else:
+                                st.error("Data extraction failed or no DataFrame returned. Check logs or Gemini response.")
+                        except Exception as e:
+                            st.error(f"Data extraction failed: {str(e)}")
                 except Exception as e:
                     st.error(f"An error occurred during processing: {e}")
                     st.session_state.error_message = str(e)

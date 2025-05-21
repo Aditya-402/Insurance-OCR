@@ -7,3 +7,9 @@ check for submission of radiology report or xray
 Check for Aadhaar number PAN card insurance card number
 Check for total expected cost of hospitalization
 Is Patient Name consistent in Claim Request Form (CRF), Assessment/OPD record, Discharge Summary and Lab Reports
+Patient's Gender on Aadhaar card and Claim Request Form is same
+Patient's Age on Aadhaar card and Claim Request Form is same
+not patient's pan card 
+patient's pan card
+patient's aadhar card
+patient's insurance card

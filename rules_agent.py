@@ -13,7 +13,7 @@ if not API_KEY:
 
 DB_PATH_INFO = os.getenv("DB_PATH", "claim_database.db")
 
-GEMINI_MODEL_NAME = os.getenv("GEMINI_MODEL_NAME", 'gemini-1.5-flash')
+GEMINI_MODEL_NAME = os.getenv("GEMINI_MODEL_NAME", 'gemini-1.5-pro')
 
 TABLE_NAME = tooling.ALLOWED_TABLE
 

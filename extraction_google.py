@@ -159,10 +159,10 @@ def query_google_with_image(prompt, image_path):
                             - "Star Health Insurance & Allied Insurance Company"  
                             - "Customer Identity Card"  
 
-                            - Aadhar card: if the image contains any of  
+                            - Aadhaar card: if the image contains any of  
                             - "Government of India"  
                             - "Aadhar"  
-                            - "Mera Aadhar, Meri Pehchan"  
+                            - "Mera Aadhaar, Meri Pehchan"  
 
                             - PAN Card: if the image contains any of  
                             - "INCOME TAX DEPARTMENT"  
