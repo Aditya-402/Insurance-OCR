@@ -1,0 +1,63 @@
+Model: decision_tree
+Accuracy: 0.3000
+
+                       precision    recall  f1-score   support
+
+        Adenoidectomy       0.00      0.00      0.00         1
+        Adrenalectomy       1.00      0.50      0.67         2
+          Angioplasty       0.00      0.00      0.00         1
+         Appendicitis       0.00      0.00      0.00         1
+          Arthroscopy       0.00      0.00      0.00         2
+       Blepharoplasty       1.00      1.00      1.00         1
+Carpal Tunnel Release       0.00      0.00      0.00         2
+     Cataract Surgery       0.00      0.00      0.00         1
+     Cesarean Section       1.00      1.00      1.00         1
+      Cholecystectomy       0.00      0.00      0.00         2
+         Circumcision       0.00      0.00      0.00         0
+Cochlear Implantation       0.00      0.00      0.00         1
+            Colectomy       1.00      1.00      1.00         1
+   Corneal Transplant       1.00      1.00      1.00         1
+Dacryocystorhinostomy       0.00      0.00      0.00         1
+           Fasciotomy       0.00      0.00      0.00         1
+          Glossectomy       1.00      0.67      0.80         3
+     Hemorrhoidectomy       0.00      0.00      0.00         2
+         Hernioplasty       0.00      0.00      0.00         1
+      Hip Replacement       1.00      1.00      1.00         2
+         Hysterectomy       0.00      0.00      0.00         2
+     Knee Replacement       0.50      1.00      0.67         1
+          Laminectomy       0.00      0.00      0.00         2
+           Laparotomy       0.00      0.00      0.00         1
+         Laryngectomy       0.00      0.00      0.00         1
+          Lithotripsy       0.03      1.00      0.06         1
+            Lobectomy       1.00      1.00      1.00         1
+           Lumpectomy       0.00      0.00      0.00         1
+       Mandibulectomy       0.00      0.00      0.00         1
+           Myomectomy       0.00      0.00      0.00         1
+          Nephrectomy       1.00      1.00      1.00         1
+                 ORIF       0.00      0.00      0.00         2
+         Oophorectomy       1.00      1.00      1.00         1
+         Orchidectomy       0.00      0.00      0.00         1
+            Osteotomy       0.00      0.00      0.00         0
+    Parathyroidectomy       0.00      0.00      0.00         1
+        Parotidectomy       0.00      0.00      0.00         1
+          Rhinoplasty       0.00      0.00      0.00         3
+          Septoplasty       0.00      0.00      0.00         0
+     Septorhinoplasty       0.00      0.00      0.00         1
+      Shunt Procedure       1.00      1.00      1.00         2
+        Spinal Fusion       1.00      0.50      0.67         2
+         Stapedectomy       0.00      0.00      0.00         1
+        Tendon Repair       1.00      1.00      1.00         1
+        Thyroidectomy       0.00      0.00      0.00         1
+        Tonsillectomy       0.00      0.00      0.00         2
+       Trabeculectomy       0.17      0.50      0.25         2
+       Tubal Ligation       0.00      0.00      0.00         1
+          Uvuloplasty       0.00      0.00      0.00         2
+      Varicocelectomy       1.00      0.50      0.67         2
+Varicose Vein Surgery       0.00      0.00      0.00         1
+            Vasectomy       0.00      0.00      0.00         1
+           Vitrectomy       0.00      0.00      0.00         1
+           Vulvectomy       1.00      1.00      1.00         1
+
+             accuracy                           0.30        70
+            macro avg       0.29      0.29      0.27        70
+         weighted avg       0.33      0.30      0.29        70

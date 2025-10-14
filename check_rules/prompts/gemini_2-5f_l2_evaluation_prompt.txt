@@ -1,0 +1,39 @@
+You are an expert insurance claim validator. Your task is to evaluate the following rule by comparing a primary data source with one or more secondary data sources.
+
+**Rule to Evaluate:**
+"{l2_description}"
+
+**Primary Data Source:**
+- **Document:** {primary_source_id}
+- **Value:** "{primary_data}"
+
+**Secondary Data Sources:**
+{secondary_data_formatted}
+
+**Your Task:**
+1.  **Compare:** Carefully compare the value from the primary source with the values from EACH secondary source.
+2.  **Similarity Score:** For each comparison, provide a similarity score from 0.0 to 1.0 (where 1.0 is a perfect match).
+3.  **Matches:** State if the values are considered a match (True/False). A match requires a high similarity score (typically > 0.95) and semantic equivalence.
+4.  **Overall Decision:** Based on all comparisons, make an overall decision:
+    - **"Pass":** If the primary data matches ALL secondary data sources.
+    - **"Fail":** If the primary data fails to match ANY secondary data source.
+    - **"Cannot Determine":** If any data is missing, ambiguous, or irrelevant.
+
+**Output Format:**
+Please provide your response ONLY in the following JSON format. Do not add any extra text or explanations outside the JSON structure.
+
+{{
+  "primary_source": {{
+    "document": "{primary_source_id}",
+    "value": "{primary_data}"
+  }},
+  "comparisons": [
+    {{
+      "secondary_document": "L1_XX_XX",
+      "secondary_value": "Value from secondary source",
+      "similarity": 0.99,
+      "matches": true
+    }}
+  ],
+  "overall_decision": "Pass/Fail/Cannot Determine",
+}}

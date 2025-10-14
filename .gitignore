@@ -4,7 +4,11 @@
 # Credentials / Secrets
 *.json
 
-# Database folder
+# Databases
+databases/
+*.db
+*.sqlite
+*.sqlite3
 pdf_db/
 
 # Python cache
@@ -12,6 +16,7 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+.pytest_cache/
 
 # Generated output files
 *.png
@@ -32,13 +37,46 @@ extracted_text.txt
 extracted_data.csv
 extracted_data.xlsx
 
-# Output folders from pdf_to_images.py (match pattern)
+# Generated reports
+*.html
+claim_*_report.*
+reports/
+
+# Processed outputs
+processed_output/
 *_????????????/
+
+# Temporary files
+temp_db_updates/
+conversations/
+*.zip
+
+# Documentation artifacts (optional - keep source docs)
+*.docx
+*.xlsx
+*.dot
+
+# Web UI artifacts
+web_ui/
 
 # IDE specific files
 .vscode/
 .idea/
+.windsurf/
 
 # OS specific files
 .DS_Store
 Thumbs.db
+
+# Conda environment
+insurance_ocr_env/
+*.conda
+
+# Build artifacts
+build/
+dist/
+*.exe
+*.spec
+
+# Machine learning models (optional - keep if you want to version them)
+*.pkl

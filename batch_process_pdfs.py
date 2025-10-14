@@ -5,9 +5,7 @@ from datetime import datetime
 from tqdm import tqdm
 import pandas as pd
 from pdf_to_images import convert_pdf_to_images
-from extraction_google import query_google_with_image
-from query_text_gemini import query_gemini_with_file
-
+from extract_map.extract_from_image import query_gemini_with_image
 
 def setup_logging(log_path):
     logging.basicConfig(
@@ -36,7 +34,7 @@ def process_pdf(pdf_path, output_folder, questions_file):
         with open(questions_file, 'r', encoding='utf-8') as f:
             base_prompt = f.read()
         for idx, image_file in enumerate(image_files, start=1):
-            extracted_text = query_google_with_image(base_prompt, image_file)
+            extracted_text = query_gemini_with_image(base_prompt, image_file)
             page_separator = f"\n\n--- Page {idx} ---\n\n"
             all_text += page_separator + (extracted_text or "")
 
@@ -45,16 +43,8 @@ def process_pdf(pdf_path, output_folder, questions_file):
         with open(output_text_path, "w", encoding="utf-8") as text_file:
             text_file.write(all_text)
 
-        # 4. Query Gemini for structured data
-        df, csv_path = query_gemini_with_file(output_text_path, all_text)
-        # Move/rename CSV to per-pdf folder as extracted_data.csv
-        desired_csv_path = os.path.join(pdf_output_folder, f"{pdf_name}.csv")
-        if csv_path and os.path.exists(csv_path):
-            if os.path.abspath(csv_path) != os.path.abspath(desired_csv_path):
-                shutil.move(csv_path, desired_csv_path)
-            logging.info(f"SUCCESS: {pdf_path} -> {desired_csv_path}")
-        else:
-            logging.error(f"FAIL: {pdf_path} - Gemini extraction returned None or CSV not found")
+        # The batch process for each PDF now concludes after creating the .txt files.
+        logging.info(f"SUCCESS: {pdf_path} -> Text files created in {pdf_output_folder}.")
     except Exception as e:
         logging.error(f"FAIL: {pdf_path} - {e}")
 

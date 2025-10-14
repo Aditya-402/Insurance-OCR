@@ -1,0 +1,38 @@
+# Prompt for Extracting Patient and Non-Patient Data
+
+Task: Extract and organize data for a specific patient and all non-patient entries from the provided text data.
+
+Instructions:
+Given the following extracted text data from identity and insurance documents, and a specified patient name, perform the following:
+
+1. Name Match: Include any information where the name exactly or closely matches the given patient name.
+
+When matching names, treat abbreviations and initials as a match if the surname and at least one given name match. For example, 'P Mahalakshmi' and 'Padmanabhuni Maha Lakshmi' should be considered the same person.
+
+Examples of close matches:
+- 'Padmanabhuni Maha Lakshmi' == 'P Mahalakshmi'
+- 'Ravi Kumar S' == 'S Ravi Kumar'
+
+These are considered "Patient Data".
+
+2. All other entries are considered "Not Patient Data".
+3. Output two sections:
+
+--Patient Data--
+[List all entries for the patient in the format: item :: value :: category]
+
+--Not Patient Data--
+[List all other entries in the same format: item :: value :: category]
+
+**Important:** Exclude (drop) any entries where the value is "not in scope". Do not include these lines in either section, even if they match other criteria.
+
+Input:
+Patient Name: <PATIENT_NAME>
+Extracted Data:
+<DATA>
+
+Output:
+--Patient Data--
+...
+--Not Patient Data--
+...

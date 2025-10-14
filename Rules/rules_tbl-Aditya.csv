@@ -1,0 +1,42 @@
+Rules_ID,Rules_description
+CH01,Is the claim form submitted?
+CH02,Is the assessment record submitted?
+CH03,Is the discharge summary submitted?
+CH04,Is the insurance card submitted?
+CH05,Is the Aadhaar card submitted?
+CH06,Is the PAN card submitted?
+CH07,Is the 2D ECHO report submitted?
+CH08,Is the 2D ECHOCARDIOGRAM report submitted?
+CH09,Is the anoscopy report submitted?
+CH10,Is the Antenatal Scan report submitted?
+CH11,Is the cardiac enzymes report submitted?
+CH12,Is the CD Limb report submitted?
+CH13,Is the Clinical Examination&History report submitted?
+CH14,Is the Colour Doppler Limb report submitted?
+CH15,Is the colour doppler study report submitted?
+CH16,"Is the Computer tomography paranasal sinuses , x ray report submitted?"
+CH17,Is the contrast tomography abdomen report submitted?
+CH18,"Is the CT KUB(Kidney,Ureter ,Bladder) report submitted?"
+CH19,Is the CT PNS/X RAY PNS report submitted?
+CH20,Is the CT/USG Abdomen report submitted?
+CH21,Is the Cystoscopy report submitted?
+CH22,Is the ECG report submitted?
+CH23,Is the Endoscopy report submitted?
+CH24,"Is the FNAC(fine needle aspiration cytology), neck scan report submitted?"
+CH25,Is the growth scan report submitted?
+CH26,Is the NECK SCAN report submitted?
+CH27,Is the Non stress test report submitted?
+CH28,Is the NT scan report submitted?
+CH29,Is the OPD report submitted?
+CH30,Is the pregnancy scan report submitted?
+CH31,Is the Presrciption report submitted?
+CH32,Is the Proctoscopy report submitted?
+CH33,Is the Radialogy report submitted?
+CH34,Is the Sigmoidoscopy report submitted?
+CH35,Is the sonography report submitted?
+CH36,Is the ultrasonogram report submitted?
+CH37,Is the ultrasonography report submitted?
+CH38,Is the USG/CT Abdomen report submitted?
+CH39,Is the viability scan report submitted?
+CH40,Is the x ray kub report submitted?
+CH41,Is the XRAY report submitted?

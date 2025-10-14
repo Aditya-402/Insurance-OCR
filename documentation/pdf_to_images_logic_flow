@@ -1,0 +1,36 @@
+digraph pdf_to_images_logic_flow {
+    // Graph attributes
+    graph [rankdir="TB", splines=ortho, nodesep=0.8, fontname="Helvetica"];
+    node [fontname="Helvetica"];
+    edge [fontname="Helvetica"];
+
+    // Node shapes for flowchart
+    start [label="Start", shape=Mdiamond, style=filled, fillcolor="#D5F5E3"];
+    end [label="End", shape=Mdiamond, style=filled, fillcolor="#FADBD8"];
+    input_data [label="Input: pdf_bytes, original_pdf_name, etc.", shape=parallelogram, style=filled, fillcolor="#E8DAEF"];
+    check_folder [label="Is output_folder provided?", shape=diamond, style=filled, fillcolor="#F9E79F"];
+    create_folder_name [label="Create folder name from PDF name + timestamp", shape=box, style=filled, fillcolor="#AED6F1"];
+    check_folder_exists [label="Does output folder exist?", shape=diamond, style=filled, fillcolor="#F9E79F"];
+    make_dir [label="Create output directory", shape=box, style=filled, fillcolor="#AED6F1"];
+    convert_bytes [label="Convert PDF bytes to image objects", shape=box, style=filled, fillcolor="#AED6F1"];
+    loop_images [label="For each image object", shape=Msquare, style=filled, fillcolor="#F9E79F"];
+    save_image [label="Save image to file (e.g., page_1.png)", shape=box, style=filled, fillcolor="#AED6F1"];
+    collect_paths [label="Add file path to list", shape=box, style=filled, fillcolor="#AED6F1"];
+    output_data [label="Return: folder_path and list_of_image_paths", shape=parallelogram, style=filled, fillcolor="#E8DAEF"];
+
+    // Define the logical flow
+    start -> input_data;
+    input_data -> check_folder;
+    check_folder -> create_folder_name [label="No"];
+    create_folder_name -> check_folder_exists;
+    check_folder -> check_folder_exists [label="Yes"];
+    check_folder_exists -> make_dir [label="No"];
+    make_dir -> convert_bytes;
+    check_folder_exists -> convert_bytes [label="Yes"];
+    convert_bytes -> loop_images;
+    loop_images -> save_image [label="Start loop"];
+    save_image -> collect_paths;
+    collect_paths -> loop_images [label="Next image"];
+    loop_images -> output_data [label="End of loop"];
+    output_data -> end;
+}

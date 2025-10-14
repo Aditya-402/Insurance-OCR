@@ -1,0 +1,40 @@
+digraph pdf_to_images_functions {
+    // Graph attributes
+    graph [rankdir="TB", splines=ortho, nodesep=1];
+    node [shape=plain, style=filled, fillcolor="#EFEFEF"];
+    edge [color="#444444"];
+
+    // Main module cluster
+    subgraph cluster_module {
+        label = "pdf_to_images.py";
+        style = "filled";
+        color = "lightgrey";
+
+        // Function: convert_pdf_to_images
+        convert_pdf_to_images [label=<
+            <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+                <TR><TD COLSPAN="2" BGCOLOR="#AED6F1"><b>convert_pdf_to_images</b></TD></TR>
+                <TR><TD COLSPAN="2">Converts PDF bytes into a series of images.</TD></TR>
+                <TR><TD BGCOLOR="#E8DAEF"><b>Argument</b></TD><TD BGCOLOR="#E8DAEF"><b>Type</b></TD></TR>
+                <TR><TD>pdf_bytes</TD><TD>bytes</TD></TR>
+                <TR><TD>original_pdf_name</TD><TD>str</TD></TR>
+                <TR><TD>output_folder</TD><TD>Optional[str]</TD></TR>
+                <TR><TD>dpi</TD><TD>int</TD></TR>
+                <TR><TD>fmt</TD><TD>str</TD></TR>
+                <TR><TD BGCOLOR="#D5F5E3"><b>Returns</b></TD><TD BGCOLOR="#D5F5E3">Tuple[str, List[str]]</TD></TR>
+            </TABLE>
+        >];
+
+        // Function: get_timestamp
+        get_timestamp [label=<
+            <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+                <TR><TD COLSPAN="2" BGCOLOR="#AED6F1"><b>get_timestamp</b></TD></TR>
+                <TR><TD COLSPAN="2">Generates a unique timestamp string.</TD></TR>
+                <TR><TD BGCOLOR="#D5F5E3"><b>Returns</b></TD><TD BGCOLOR="#D5F5E3">str</TD></TR>
+            </TABLE>
+        >];
+    }
+
+    // Define relationship (which function calls another)
+    convert_pdf_to_images -> get_timestamp [label="calls"];
+}

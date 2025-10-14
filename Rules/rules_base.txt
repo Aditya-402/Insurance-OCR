@@ -1,0 +1,76 @@
+**check rules**
+Is the claim form submitted?
+Is the assessment record submitted?
+Is the discharge summary submitted?
+Is the radiology report submitted?
+Is the insurance card submitted?
+Is the Aadhaar card submitted?
+Is the PAN card submitted?
+
+**L1 Rules**
+What is the Hospital Name on the claim form?
+What is the Hospital Location on the claim form?
+What is the Hospital City on the claim form?
+What is the Hospital Address on the claim form?
+What is the Rohini ID on the claim form?
+What is the Patient Name on the claim form/assessment record/discharge summary/radiology report?
+What is the Patient Gender on the claim form/discharge summary/radiology report/Aadhaar card?
+What is the Patient Age on the claim form/assessment record/discharge summary/radiology report?
+What is the Patient Insured ID Card number on the claim form?
+What is the Patient Policy Number on the claim form/insurance card?
+Who is the Treating Doctor on the claim form/assessment record/discharge summary/radiology report?
+What is the Nature Of Illness on the claim form?
+What is the Provisional Diagnosis on the claim form?
+What is the Line of Treatment on the claim form?
+What is the Route of Drug Administration on the claim form?
+What is the Name of Surgery on the claim form?
+What is the Date of Admission on the claim form/discharge summary?
+How many Days in Hospital are listed on the claim form?
+Was the hospitalization Emergency or Planned according to the claim form?
+What is the Room Type on the claim form?
+What is the Per Day Room Rent on the claim form?
+What are the All Inclusive Package Charges on the claim form?
+What is the Total Expected Cost of Hospitalization on the claim form?
+What is the Qualification of the treating doctor on the claim form?
+Is the Hospital Seal present on the claim form?
+What is the Consultant Name on the assessment record?
+What is the Complaint on the assessment record?
+What is the Diagnosis on the assessment record/discharge summary?
+What is the Plan on the assessment record?
+What is the Treatment on the assessment record?
+What is written in the Body of the page or what are the key points from assessment or Clinical summary on the assessment record?
+What is the Date on the assessment record/radiology report?
+What is the Discharge Date on the discharge summary?
+What is the Procedure done on the discharge summary?
+What is the Customer ID or Customer Code on the insurance card?
+What is the Member No on the insurance card?
+What is the Name of the Insured on the insurance card?
+What is the Period of Insurance from or Valid From date on the insurance card?
+What is the Period of Insurance to or Valid Upto date on the insurance card?
+What is the name on the Aadhaar card/PAN card?
+What is the year of birth on the Aadhaar card?
+What is the Aadhaar number on the Aadhaar card?
+What is the Department on the radiology report?
+What is the Impression on the radiology report?
+What is the PAN number on the PAN card?
+
+**L2 Rules**
+Is the Patient Name on the Aadhaar card the same as on the Claim Form?
+Is the Patient Name on the PAN card the same as on the Claim Form?
+Is the Patient Name on the Assessment Record the same as on the Claim Form?
+Is the Patient Name on the Discharge Summary the same as on the Claim Form?
+Is the Patient Name on the Radiology Report the same as on the Claim Form?
+Is the Patient Age on the Assessment Record the same as on the Claim Form?
+Is the Patient Age on the Discharge Summary the same as on the Claim Form?
+Is the Patient Age on the Radiology Report the same as on the Claim Form?
+Does the Year of Birth on the Aadhaar card correspond with the Patient Age on the Claim Form?
+Is the Treating Doctor Name (or Consultant Name) on the Assessment Record the same as on the Claim Form?
+Is the Doctor Name on the Discharge Summary the same as the Treating Doctor Name on the Claim Form?
+Is the Doctor Name on the Radiology Report the same as the Treating Doctor Name on the Claim Form?
+Is the Diagnosis on the Assessment Record the same as the Provisional Diagnosis on the Claim Form?
+Is the Diagnosis on the Discharge Summary the same as the Provisional Diagnosis on the Claim Form?
+Is the Policy No. on the Insurance Card the same as the Patient Policy Number on the Claim Form?
+Is the Patient Gender on the Discharge Summary the same as on the Claim Form?
+Is the Patient Gender on the Radiology Report the same as on the Claim Form?
+Is the Patient Gender on the Aadhaar card the same as on the Claim Form?
+Is the Admit Date on the Discharge Summary the same as the Date of Admission on the Claim Form?

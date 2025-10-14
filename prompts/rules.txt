@@ -1,0 +1,3 @@
+What is name of patient
+What is Aadhaar card number of patient
+What is rohiniid of patient

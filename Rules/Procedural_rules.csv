@@ -1,0 +1,61 @@
+Proc_ID,Proc_Name,Poc_Type,Check_Rules
+P0001,Haemorrhoids,Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH08"
+P0002,Appendicitis,Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH09"
+P0003,"Mastoidectomy + Tympanoplasty
+- Including Meatoplasty + Ossciculoplasty + Canaloplasty",Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH10"
+P0004,"Tympanoplasty
+- All Types of Tympanoplasty Including Canaloplasty",Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH11"
+P0005,"Tonsillectomy
+- Including Coblation Wand & LASER charges",Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH12"
+P0006,"Tonsillectomy & Adenoidectomy
+- Including Coblation Wand & LASER charges",Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH13"
+P0007,"Adenoidectomy
+- Including Coblation Wand & LASER charges",Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH14"
+P0008,Open - Cholecystectomy (Pediatric / Adult),Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH15"
+P0009,Circumcision (Day Care),Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH16"
+P0010,Fissurectomy with Sphincterotomy,Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH17"
+P0011,Fistulectomy - Low (Including cost of Laser) with Sphincterotomy,Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH18"
+P0012,Fistulectomy - High (Including cost of Laser) with Sphincterotomy,Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH19"
+P0013,Herniorraphy - Inguinal,Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH20"
+P0014,"Hernioplasty - Inguinal/Femoral - Unilateral
+- Including Cost of Mesh (Mesh worth Upto Rs.7,000/-)",Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH21"
+P0015,"Hernioplasty - Umblical/Paraumblical
+- Including Cost of Mesh (Mesh worth Upto Rs.7,000/-)",Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH22"
+P0016,"Hernioplasty - Incisional/ Ventral
+- Including Cost of Mesh (Mesh worth Upto Rs.7,000/-)",Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH23"
+P0017,"Laparoscopic Hernioplasty - Inguinal - Unilateral
+- Including Cost of Mesh - (Mesh worth Upto Rs.7,000/-) ; Tackers Excluded",Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH24"
+P0018,"Laparoscopic Hernioplasty - Inguinal - Bilateral
+- Including Cost of Mesh - (Mesh worth Upto Rs.7,000/-) ; Tackers Excluded",Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH25"
+P0019,"Laparoscopic Hernioplasty - Umblical/Paraumblical
+- Including Cost of Mesh - (Mesh worth Upto Rs.7,000/-) ; Tackers Excluded",Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH26"
+P0020,"Laparoscopic Hernioplasty - Incisional/Ventral
+- Including Cost of Mesh - (Mesh worth Upto Rs.7,000/-) ; Tackers Excluded",Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH27"
+P0021,Lymph Node Biopsy (Cervical / Axillary / Inguinal)- Under GA,Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH28"
+P0022,Lipoma - Under GA,Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH29"
+P0023,Perianal Abcess (I&D),Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH30"
+P0024,Pilonidal Sinus with primary closure,Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH31"
+P0025,Thyroidectomy - any type,Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH32"
+P0026,"Surgery for varicose veins saphenofemoral ligation and stripping /
+sclerotherapy - Unilateral",Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH33"
+P0027,"Varicose veins - Radiofrequency ablation, endovenous laser treatment
+- Including Cost of Laser and Catheter",Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH34"
+P0028,Wound debridement - Minor,Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH35"
+P0029,"Hysterectomy - Abdominal
+- With or Without BSO and adhesiolysis",Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH36"
+P0030,D & C with Hysteroscopy (Day Care),Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH37"
+P0031,Normal Delivery with Well Baby Care (Single / Twins),Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH38"
+P0032,LSCS with Well Baby Care (Single / Twins),Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH39"
+P0033,Bartholin cyst removal,Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH40"
+P0034,Carpal Tunnel Release (U/L),Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH41"
+P0035,Implant Removal - Minor (Except K-Wire),Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH42"
+P0036,Implant Removal - Major,Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH42"
+P0037,K Wire Removal,Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH42"
+P0038,A V Fistula For Dialysis (Day Care),Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH43"
+P0039,Cystoscopy & DJ Stent Insertion (Day care),Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH44"
+P0040,Cystoscopy & DJ Stent Removal (Day care),Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH45"
+P0041,Orchidectomy - Unilateral,Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH46"
+P0042,Orchidectomy - Bilateral,Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH47"
+P0043,Meatotomy (Day care),Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH48"
+P0044,Coronary Angiogram - Including Cost of dye,Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH49"
+P0045,Total knee Replacement,Surgical Management,"CH01, CH02, CH03, CH05, CH06, CH07, CH42"

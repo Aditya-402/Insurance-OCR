@@ -1,0 +1,82 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0" version="28.0.7">
+  <diagram name="Page-1" id="JdNmZWBCJ_EPhgS1tp4M">
+    <mxGraphModel dx="2249" dy="1323" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="pI4drYn6D9KPkYObKncp-32" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=4;" vertex="1" parent="1">
+          <mxGeometry x="-526" y="-73" width="1187" height="387" as="geometry" />
+        </mxCell>
+        <mxCell id="pI4drYn6D9KPkYObKncp-28" value="" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="-138" y="124" width="355" height="119" as="geometry" />
+        </mxCell>
+        <mxCell id="pI4drYn6D9KPkYObKncp-8" value="" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;" edge="1" parent="1" source="pI4drYn6D9KPkYObKncp-1" target="pI4drYn6D9KPkYObKncp-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pI4drYn6D9KPkYObKncp-1" value="Document Parsing (PDF to images)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-297" y="163" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pI4drYn6D9KPkYObKncp-9" value="" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;" edge="1" parent="1" source="pI4drYn6D9KPkYObKncp-4" target="pI4drYn6D9KPkYObKncp-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pI4drYn6D9KPkYObKncp-4" value="OCR" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-109" y="161" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pI4drYn6D9KPkYObKncp-19" value="" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;" edge="1" parent="1" source="pI4drYn6D9KPkYObKncp-5" target="pI4drYn6D9KPkYObKncp-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pI4drYn6D9KPkYObKncp-5" value="Data Preprocessing" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="64" y="161" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pI4drYn6D9KPkYObKncp-6" value="Claimforms DB" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="79.5" y="-11" width="89" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="pI4drYn6D9KPkYObKncp-13" value="" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startSize=8;endSize=8;" edge="1" parent="1" source="pI4drYn6D9KPkYObKncp-10" target="pI4drYn6D9KPkYObKncp-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pI4drYn6D9KPkYObKncp-10" value="Rules Engine" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="321" y="161" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pI4drYn6D9KPkYObKncp-12" value="Results rendering to HTML" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="505" y="161" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pI4drYn6D9KPkYObKncp-14" value="Rules DB" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="334" y="-11" width="89" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="pI4drYn6D9KPkYObKncp-22" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;fontSize=12;startSize=8;endSize=8;curved=1;exitX=1;exitY=0;exitDx=0;exitDy=52.5;exitPerimeter=0;" edge="1" parent="1" source="pI4drYn6D9KPkYObKncp-6" target="pI4drYn6D9KPkYObKncp-10">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="250" y="201" as="sourcePoint" />
+            <mxPoint x="300" y="151" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pI4drYn6D9KPkYObKncp-23" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;fontSize=12;startSize=8;endSize=8;curved=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="pI4drYn6D9KPkYObKncp-10" target="pI4drYn6D9KPkYObKncp-14">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="337" y="169" as="sourcePoint" />
+            <mxPoint x="387" y="119" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pI4drYn6D9KPkYObKncp-24" value="" style="endArrow=classic;html=1;rounded=0;fontSize=12;startSize=8;endSize=8;curved=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="pI4drYn6D9KPkYObKncp-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-391" y="193" as="sourcePoint" />
+            <mxPoint x="295" y="33" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pI4drYn6D9KPkYObKncp-25" value="Claim form &lt;br&gt;in PDF format" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="-494" y="171" width="117" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="pI4drYn6D9KPkYObKncp-27" value="Does the rules evaluation" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="289" y="257" width="199" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="pI4drYn6D9KPkYObKncp-29" value="Does the required meta data extraction from documnet" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="-163.5" y="257" width="406" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="pI4drYn6D9KPkYObKncp-30" value="DB for saving extracted details form request form" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="37" y="-45" width="157" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="pI4drYn6D9KPkYObKncp-31" value="DB for Pre configured Rules&amp;nbsp;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="301" y="-45" width="149" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

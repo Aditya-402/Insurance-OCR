@@ -1,0 +1,68 @@
+Model: logistic_regression
+Accuracy: 0.2714
+
+                         precision    recall  f1-score   support
+
+          Adenoidectomy       0.00      0.00      0.00         1
+          Adrenalectomy       0.00      0.00      0.00         2
+            Angioplasty       0.00      0.00      0.00         1
+           Appendectomy       0.00      0.00      0.00         0
+           Appendicitis       0.00      0.00      0.00         1
+            Arthroscopy       0.00      0.00      0.00         2
+         Blepharoplasty       1.00      1.00      1.00         1
+           Bunionectomy       0.00      0.00      0.00         0
+  Carpal Tunnel Release       0.00      0.00      0.00         2
+       Cataract Surgery       0.00      0.00      0.00         1
+       Cesarean Section       1.00      1.00      1.00         1
+        Cholecystectomy       0.00      0.00      0.00         2
+           Circumcision       0.00      0.00      0.00         0
+  Cochlear Implantation       0.00      0.00      0.00         1
+              Colectomy       1.00      1.00      1.00         1
+     Corneal Transplant       1.00      1.00      1.00         1
+        Coronary Bypass       0.00      0.00      0.00         0
+             Cystectomy       0.00      0.00      0.00         0
+  Dacryocystorhinostomy       0.00      0.00      0.00         1
+             Fasciotomy       1.00      1.00      1.00         1
+            Glossectomy       0.00      0.00      0.00         3
+       Hemorrhoidectomy       0.00      0.00      0.00         2
+           Hernioplasty       0.00      0.00      0.00         1
+        Hip Replacement       1.00      0.50      0.67         2
+           Hysterectomy       0.00      0.00      0.00         2
+       Knee Replacement       0.33      1.00      0.50         1
+            Laminectomy       0.00      0.00      0.00         2
+             Laparotomy       1.00      1.00      1.00         1
+           Laryngectomy       0.00      0.00      0.00         1
+            Lithotripsy       1.00      1.00      1.00         1
+              Lobectomy       1.00      1.00      1.00         1
+             Lumpectomy       0.00      0.00      0.00         1
+         Mandibulectomy       0.00      0.00      0.00         1
+             Myomectomy       1.00      1.00      1.00         1
+            Nephrectomy       1.00      1.00      1.00         1
+                   ORIF       0.00      0.00      0.00         2
+           Oophorectomy       1.00      1.00      1.00         1
+           Orchidectomy       0.00      0.00      0.00         1
+              Osteotomy       0.00      0.00      0.00         0
+Pancreaticoduodenectomy       0.00      0.00      0.00         0
+      Parathyroidectomy       0.00      0.00      0.00         1
+          Parotidectomy       0.00      0.00      0.00         1
+            Rhinoplasty       0.00      0.00      0.00         3
+            Septoplasty       0.00      0.00      0.00         0
+       Septorhinoplasty       0.00      0.00      0.00         1
+        Shunt Procedure       1.00      0.50      0.67         2
+          Spinal Fusion       1.00      0.50      0.67         2
+           Stapedectomy       0.25      1.00      0.40         1
+          Tendon Repair       1.00      1.00      1.00         1
+          Thyroidectomy       0.00      0.00      0.00         1
+          Tonsillectomy       0.00      0.00      0.00         2
+         Trabeculectomy       0.00      0.00      0.00         2
+         Tubal Ligation       0.50      1.00      0.67         1
+            Uvuloplasty       0.00      0.00      0.00         2
+        Varicocelectomy       0.00      0.00      0.00         2
+  Varicose Vein Surgery       0.00      0.00      0.00         1
+              Vasectomy       0.00      0.00      0.00         1
+             Vitrectomy       0.00      0.00      0.00         1
+             Vulvectomy       1.00      1.00      1.00         1
+
+               accuracy                           0.27        70
+              macro avg       0.29      0.30      0.28        70
+           weighted avg       0.29      0.27      0.27        70
