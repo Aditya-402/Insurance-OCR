@@ -134,29 +134,29 @@ def render_check_rules_page():
             st.session_state.fetched_rules_content_processed = processed_rules_output
 
             # --- L2 Rule Processing ---
-            with st.spinner("Processing L2 rules with Gemini..."):
-                l2_rules = fetch_all_l2_rules_from_db(RULES_DB_PATH)
-                l2_results = []
-                if l2_rules:
-                    for rule in l2_rules:
-                        evaluation = evaluate_l2_rule_with_gemini(
-                            l2_description=rule['description'],
-                            l1_value=rule['l1_data_references'],
-                            rules_db_path=RULES_DB_PATH,
-                            claims_db_path=DB_PATH,
-                            claim_id=claim_id
-                        )
-                        decision = 'Error'
-                        if isinstance(evaluation, dict):
-                            decision = evaluation.get('decision', 'Error')
+            # with st.spinner("Processing L2 rules with Gemini..."):
+            #     l2_rules = fetch_all_l2_rules_from_db(RULES_DB_PATH)
+            #     l2_results = []
+            #     if l2_rules:
+            #         for rule in l2_rules:
+            #             evaluation = evaluate_l2_rule_with_gemini(
+            #                 l2_description=rule['description'],
+            #                 l1_value=rule['l1_data_references'],
+            #                 rules_db_path=RULES_DB_PATH,
+            #                 claims_db_path=DB_PATH,
+            #                 claim_id=claim_id
+            #             )
+            #             decision = 'Error'
+            #             if isinstance(evaluation, dict):
+            #                 decision = evaluation.get('decision', 'Error')
                         
-                        l2_results.append({
-                            'rule_id': rule['rule_id'],
-                            'description': rule['description'],
-                            'gemini_evaluation': decision,
-                            'raw_evaluation': evaluation if isinstance(evaluation, dict) else {'error': str(evaluation)}
-                        })
-            st.session_state.l2_results_for_report = l2_results
+            #             l2_results.append({
+            #                 'rule_id': rule['rule_id'],
+            #                 'description': rule['description'],
+            #                 'gemini_evaluation': decision,
+            #                 'raw_evaluation': evaluation if isinstance(evaluation, dict) else {'error': str(evaluation)}
+            #             })
+            # st.session_state.l2_results_for_report = l2_results
 
     # --- Display Area ---
     if st.session_state.fetched_rules_content_processed:

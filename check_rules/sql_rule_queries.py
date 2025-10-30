@@ -287,13 +287,20 @@ def fetch_l1_rule_descriptions_with_values(rules_db_path: str, check_rule_id: st
             value = None
             if sql_query:
                 try:
-                    sql_to_run = sql_query.replace('{claim_id}', claim_id)
                     with sqlite3.connect(claims_db_path) as conn_claims:
                         cursor_claims = conn_claims.cursor()
-                        cursor_claims.execute(sql_to_run)
+                        # Use parameterized query for security and correctness
+                        if '?' in sql_query:
+                            cursor_claims.execute(sql_query, (claim_id,))
+                        else:
+                            # Execute queries that don't need a claim_id (if any)
+                            cursor_claims.execute(sql_query)
+                        
                         val_row = cursor_claims.fetchone()
                         if val_row is not None:
                             value = val_row[0] if len(val_row) == 1 else val_row
+                        else:
+                            value = "N/A" # Explicitly set value if no result is found
                 except Exception as e:
                     value = f"Error executing SQL: {e}"
             results.append({'rule_id': rule_id, 'description': desc, 'value': value})
