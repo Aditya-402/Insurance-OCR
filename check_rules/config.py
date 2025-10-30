@@ -2,6 +2,7 @@ import os
 import logging
 from google import genai
 from google.genai import types
+from dotenv import load_dotenv
 
 # This file centralizes database path configurations to avoid circular imports.
 
@@ -11,32 +12,37 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 # Get the project root directory (which is the parent of the 'check_rules' directory)
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Define the main directory for databases
-DATABASES_DIR = os.path.join(PROJECT_ROOT, 'databases')
+# --- PostgreSQL Connection Details ---
 
-# Path for the main claims database
-DB_PATH = os.getenv(
-    'DB_PATH', 
-    os.path.join(DATABASES_DIR, 'claims_database.db')
-)
+# Connection details for the Rules database
+RULES_DB_CONFIG = {
+    'dbname': 'Rules',
+    'user': 'postgres',
+    'password': 'postgress',
+    'host': 'localhost',
+    'port': '5432'
+}
 
-# Path for the rules database
-RULES_DB_PATH = os.getenv(
-    'RULES_DB_PATH', 
-    os.path.join(DATABASES_DIR, 'rules.db')
-)
+# Connection details for the Claims database
+CLAIMS_DB_CONFIG = {
+    'dbname': 'claims_database',
+    'user': 'postgres',
+    'password': 'postgress',
+    'host': 'localhost',
+    'port': '5432'
+}
+
+# --- Path and File Configurations ---
 
 # Path for processed output directory
-PROCESSED_OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'processed_output', 'results')
+PROCESSED_OUTPUT_DIR = os.path.join(PROJECT_ROOT, 'processed_output', 'results')
 
-# Ensure the databases directory exists
-if not os.path.exists(DATABASES_DIR):
-    os.makedirs(DATABASES_DIR)
-    logging.info(f"Created directory: {DATABASES_DIR}")
+# Define constants for file extensions
+TXT_EXT = ".txt"
+EXCEL_FILE = "rules.xlsx"
 
 
 # --- Gemini Model Configuration ---
-from dotenv import load_dotenv
 
 # Load environment variables from .env file located in the project root
 ENV_PATH = os.path.join(PROJECT_ROOT, '.env')
@@ -93,4 +99,3 @@ def get_gemini_model(response_mime_type: str = "text/plain", enable_thinking: bo
     except Exception as e:
         logging.error(f"Failed to initialize Gemini client: {e}")
         return None
-

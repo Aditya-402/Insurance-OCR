@@ -1,191 +1,130 @@
-import sqlite3
-import re
+import psycopg2
+import pandas as pd
 import os
-from collections import defaultdict
+from sqlalchemy import create_engine
 
-DB_PATH = os.path.join(os.path.dirname(__file__), 'rules.db')
-RULES_FILE_PATH = os.path.join(os.path.dirname(__file__), 'rules_base.txt')
+# Assuming check_rules is in the parent directory, adjust if necessary
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from check_rules.config import RULES_DB_CONFIG
 
-def get_document_name_from_check_rule(rule_text):
-    """Extracts document name from a check rule.
-    Example: 'Is the claim form submitted?' -> 'claim form'
-    """
-    match = re.search(r'Is the (.*?) submitted\?', rule_text)
-    if match:
-        return match.group(1).strip().lower()
-    return None
+# --- Configuration ---
+EXCEL_PATH = os.path.join(os.path.dirname(__file__), 'rules.xlsx')
 
-def create_connection(db_file):
-    """Create a database connection to the SQLite database specified by db_file"""
-    conn = None
+def create_connection():
+    """Create a database connection to the PostgreSQL database."""
     try:
-        conn = sqlite3.connect(db_file)
-        return conn
-    except sqlite3.Error as e:
+        return psycopg2.connect(**RULES_DB_CONFIG)
+    except psycopg2.Error as e:
         print(f"Error connecting to database: {e}")
-    return conn
+        return None
 
 def create_table(conn, create_table_sql):
-    """Create a table from the create_table_sql statement"""
+    """Create a table from the create_table_sql statement."""
     try:
-        c = conn.cursor()
-        c.execute(create_table_sql)
-    except sqlite3.Error as e:
+        with conn.cursor() as c:
+            c.execute(create_table_sql)
+        conn.commit()
+    except psycopg2.Error as e:
         print(f"Error creating table: {e}")
+        conn.rollback()
 
 def main():
     # --- Database Setup ---
-    conn = create_connection(DB_PATH)
+    conn = create_connection()
     if not conn:
         return
 
-    # Drop tables if they exist to ensure a fresh start
-    cursor = conn.cursor()
-    cursor.execute("DROP TABLE IF EXISTS L1_Rules") # Drop dependent table first
-    cursor.execute("DROP TABLE IF EXISTS Check_Rules")
-    cursor.execute("DROP TABLE IF EXISTS L2_Rules")
-    conn.commit()
+    print(f"Database connection established to {RULES_DB_CONFIG['dbname']}")
+
+    # --- Table Definitions ---
+    sql_create_procedure_rules_table = """ CREATE TABLE IF NOT EXISTS procedure_rules (
+                                        id SERIAL PRIMARY KEY,
+                                        proc_name TEXT NOT NULL,
+                                        check_rules TEXT,
+                                        procedure_rules TEXT
+                                    ); """
+
+    sql_create_check_rules_table = """CREATE TABLE IF NOT EXISTS check_rules (
+                                    rules_id TEXT PRIMARY KEY,
+                                    rules_description TEXT NOT NULL
+                                );"""
+
+    sql_create_l1_rules_table = """CREATE TABLE IF NOT EXISTS l1_rules (
+                                    rule_id TEXT PRIMARY KEY,
+                                    check_rule_id TEXT,
+                                    description TEXT NOT NULL,
+                                    sql_query TEXT,
+                                    FOREIGN KEY (check_rule_id) REFERENCES check_rules (rules_id)
+                                );"""
+
+    sql_create_l2_rules_table = """CREATE TABLE IF NOT EXISTS l2_rules (
+                                    rule_id TEXT PRIMARY KEY,
+                                    rule_description TEXT NOT NULL,
+                                    l1_rule_id TEXT,
+                                    FOREIGN KEY (l1_rule_id) REFERENCES l1_rules (rule_id)
+                                );"""
 
     # --- Table Creation ---
-    sql_create_check_rules_table = """
-    CREATE TABLE IF NOT EXISTS Check_Rules (
-        rule_id TEXT PRIMARY KEY,
-        rule_description TEXT NOT NULL
-    );
-    """
-    sql_create_l1_rules_table = """
-    CREATE TABLE IF NOT EXISTS L1_Rules (
-        rule_id TEXT PRIMARY KEY,
-        rule_description TEXT NOT NULL,
-        check_rule_id TEXT NOT NULL,
-        FOREIGN KEY (check_rule_id) REFERENCES Check_Rules (rule_id)
-    );
-    """
-    sql_create_l2_rules_table = """
-    CREATE TABLE IF NOT EXISTS L2_Rules (
-        rule_id TEXT PRIMARY KEY,
-        rule_description TEXT NOT NULL
-    );
-    """
+    create_table(conn, sql_create_procedure_rules_table)
     create_table(conn, sql_create_check_rules_table)
     create_table(conn, sql_create_l1_rules_table)
     create_table(conn, sql_create_l2_rules_table)
 
     # --- Data Population ---
-    check_rules_data = []
-    l1_rules_data = []
-    l2_rules_data = []
-
-    check_rule_doc_map = {} # Stores "document name": "CHXX"
-
-    current_section = None
-    ch_counter = 1
-    l1_counters = defaultdict(lambda: 1) # To generate L1_XX_YY (YY part)
-    l2_counter = 1
-
     try:
-        with open(RULES_FILE_PATH, 'r', encoding='utf-8') as f:
-            lines = f.readlines()
+        df_proc = pd.read_excel(EXCEL_PATH, sheet_name='Procedure_rules')
+        df_check = pd.read_excel(EXCEL_PATH, sheet_name='Check_Rules')
+        df_l1 = pd.read_excel(EXCEL_PATH, sheet_name='L1_Rules')
+        df_l2 = pd.read_excel(EXCEL_PATH, sheet_name='L2_Rules')
+
     except FileNotFoundError:
-        print(f"Error: {RULES_FILE_PATH} not found.")
-        if conn:
-            conn.close()
+        print(f"Error: The file {EXCEL_PATH} was not found.")
+        conn.close()
+        return
+    except Exception as e:
+        print(f"Error reading Excel file: {e}")
+        conn.close()
         return
 
-    for line in lines:
-        line = line.strip()
-        if not line:
-            continue
+    # --- Data Cleaning and Validation ---
+    # Standardize all column names to lowercase to prevent case-sensitivity issues
+    df_proc.columns = [col.lower() for col in df_proc.columns]
+    df_check.columns = [col.lower() for col in df_check.columns]
+    df_l1.columns = [col.lower() for col in df_l1.columns]
+    df_l2.columns = [col.lower() for col in df_l2.columns]
 
-        if line.lower() == "**check rules**":
-            current_section = "check"
-            continue
-        elif line.lower() == "**l1 rules**":
-            current_section = "l1"
-            continue
-        elif line.lower() == "**l2 rules**":
-            current_section = "l2"
-            continue
+    # Validate and clean 'check_rules' column in the procedure rules DataFrame
+    if 'check_rules' in df_proc.columns:
+        # Replace non-expression values (like 'Day Care') with a valid empty expression '[]'
+        df_proc['check_rules'] = df_proc['check_rules'].apply(
+            lambda x: x if isinstance(x, str) and (x.strip().startswith('[') or x.strip().startswith('(')) else '[]'
+        )
+        print("Validated and cleaned 'check_rules' column.")
 
-        if current_section == "check":
-            rule_id_num = ch_counter
-            rule_id_str = f"CH{rule_id_num:02d}"
-            doc_name = get_document_name_from_check_rule(line)
-            if doc_name:
-                check_rules_data.append((rule_id_str, line))
-                check_rule_doc_map[doc_name] = rule_id_str
-                # rule_id_num is still useful for ch_counter
-                ch_counter += 1
-            else:
-                print(f"Warning: Could not parse document name from check rule: {line}")
-
-        elif current_section == "l1":
-            match_docs = re.search(r'on the (.*?)(?:\?|$)', line, re.IGNORECASE)
-            associated_check_rule_id = None
-            # associated_doc_map_id_for_l1 will be derived from associated_check_rule_id
-
-            if match_docs:
-                doc_references_str = match_docs.group(1).strip()
-                possible_doc_names = [name.strip().lower() for name in doc_references_str.split('/')]
-
-                for pdn in possible_doc_names:
-                    if pdn in check_rule_doc_map:
-                        associated_check_rule_id = check_rule_doc_map[pdn]
-                        break
-                    else:
-                        # Attempt partial match for cases like 'aadhaar card' vs 'the aadhaar card'
-                        for known_doc, ch_id in check_rule_doc_map.items():
-                            if pdn.endswith(known_doc) or known_doc.endswith(pdn):
-                                associated_check_rule_id = ch_id
-                                break
-                        if associated_check_rule_id: # Found via partial match
-                            break
-            
-            if not associated_check_rule_id:
-                 # Fallback for L1 rules where 'on the' might not be standard or missing
-                 # Try to find any known document name in the rule description
-                 for known_doc_name_key in check_rule_doc_map.keys():
-                     if known_doc_name_key in line.lower():
-                        associated_check_rule_id = check_rule_doc_map[known_doc_name_key]
-                        # print(f"Fallback match for L1: '{line}' matched with '{known_doc_name_key}'")
-                        break # Take the first one found
-
-            if associated_check_rule_id:
-                # Extract numeric part from associated_check_rule_id (e.g., 'CH01' -> 1)
-                match_num = re.search(r'\d+', associated_check_rule_id)
-                if match_num:
-                    doc_map_id_for_l1 = int(match_num.group(0))
-                    l1_specific_counter = l1_counters[doc_map_id_for_l1]
-                    l1_rule_id = f"L1_{doc_map_id_for_l1:02d}_{l1_specific_counter:02d}"
-                    l1_rules_data.append((l1_rule_id, line, associated_check_rule_id))
-                    l1_counters[doc_map_id_for_l1] += 1
-                else:
-                    print(f"Warning: Could not extract numeric ID from check_rule_id '{associated_check_rule_id}' for L1 rule: {line}")
-            else:
-                print(f"Warning: L1 rule could not be associated with a document and was skipped: {line}")
-
-        elif current_section == "l2":
-            rule_id_str = f"L2_{l2_counter:02d}"
-            l2_rules_data.append((rule_id_str, line))
-            l2_counter += 1
-
-    # --- Insert Data into Tables ---
-    cursor = conn.cursor()
+    # Insert data into tables using SQLAlchemy for robust DataFrame handling
     try:
-        if check_rules_data:
-            cursor.executemany("INSERT INTO Check_Rules (rule_id, rule_description) VALUES (?, ?)", check_rules_data)
-        if l1_rules_data:
-            cursor.executemany("INSERT INTO L1_Rules (rule_id, rule_description, check_rule_id) VALUES (?, ?, ?)", l1_rules_data)
-        if l2_rules_data:
-            cursor.executemany("INSERT INTO L2_Rules (rule_id, rule_description) VALUES (?, ?)", l2_rules_data)
-        conn.commit()
-        print(f"Database '{os.path.basename(DB_PATH)}' created and populated successfully in '{os.path.dirname(DB_PATH)}'.")
-        print(f"{len(check_rules_data)} check rules, {len(l1_rules_data)} L1 rules, {len(l2_rules_data)} L2 rules added.")
-    except sqlite3.Error as e:
-        print(f"Error inserting data: {e}")
-    finally:
-        if conn:
-            conn.close()
+        db_user = RULES_DB_CONFIG['user']
+        db_password = RULES_DB_CONFIG['password']
+        db_host = RULES_DB_CONFIG['host']
+        db_port = RULES_DB_CONFIG['port']
+        db_name = RULES_DB_CONFIG['dbname']
+        engine_str = f'postgresql+psycopg2://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}'
+        engine = create_engine(engine_str)
 
-if __name__ == '__main__':
+        # Use a temporary connection from the engine to insert data
+        with engine.connect() as temp_conn:
+            df_proc.to_sql('procedure_rules', temp_conn, if_exists='replace', index=False)
+            df_check.to_sql('check_rules', temp_conn, if_exists='replace', index=False)
+            df_l1.to_sql('l1_rules', temp_conn, if_exists='replace', index=False)
+            df_l2.to_sql('l2_rules', temp_conn, if_exists='replace', index=False)
+        
+        print("Data inserted successfully from Excel into the database.")
+    except Exception as e:
+        print(f"Error inserting data into database: {e}")
+    finally:
+        conn.close()
+        print("Database connection closed.")
+
+if __name__ == "__main__":
     main()

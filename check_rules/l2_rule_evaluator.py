@@ -2,7 +2,7 @@ import os
 import re
 import logging
 import json
-from typing import Union
+from typing import Union, Dict, Any
 
 try:
     from .config import get_gemini_model
@@ -20,13 +20,12 @@ except ImportError:
     # For when run as a standalone script
     from sql_tooling import _fetch_data_for_l1_rule
 
-def evaluate_l2_rule_with_gemini(l2_description: str, l1_value: str, rules_db_path: str, claims_db_path: str, claim_id: str) -> Union[dict, str]:
+def evaluate_l2_rule_with_gemini(l2_description: str, l1_value: str, claim_id: str) -> Dict[str, Any]:
     """
     Evaluates an L2 rule using the Gemini Developer API.
     
     For complex rules, it fetches underlying L1 data, constructs a detailed prompt,
     and expects a structured JSON response. For simple rules, it uses a basic prompt.
-    
     Returns a dictionary with evaluation details or an error string.
     """
 
@@ -42,7 +41,7 @@ def evaluate_l2_rule_with_gemini(l2_description: str, l1_value: str, rules_db_pa
                 return {"decision": "Cannot Determine", "reasoning": f"Invalid L1 data format: {l1_value}"}
 
             # Fetch all data, preserving order
-            ordered_fetched_data = [{'document': p[0].strip(), 'value': _fetch_data_for_l1_rule(p[1].strip(), rules_db_path, claims_db_path, claim_id)} for p in rule_pairs]
+            ordered_fetched_data = [{'document': p[0].strip(), 'value': _fetch_data_for_l1_rule(p[1].strip(), claim_id)} for p in rule_pairs]
 
             primary_source = ordered_fetched_data[0]
             secondary_sources = ordered_fetched_data[1:]
@@ -148,8 +147,6 @@ def evaluate_l2_rule_with_gemini(l2_description: str, l1_value: str, rules_db_pa
 
 if __name__ == '__main__':
     # This block is for standalone testing of the Gemini tooling.
-    from config import DB_PATH, RULES_DB_PATH
-
     try:
         # Example of a complex rule evaluation
         test_l2_description = "Check if the Patient Name is the same in the Claim Form and the Aadhaar card, PAN card, Assessment Record, Discharge Summary, and Radiology Report"
@@ -165,8 +162,6 @@ if __name__ == '__main__':
         evaluation_result = evaluate_l2_rule_with_gemini(
             test_l2_description, 
             test_l1_value,
-            RULES_DB_PATH,
-            DB_PATH,
             test_claim_id
         )
         
